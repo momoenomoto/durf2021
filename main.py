@@ -57,7 +57,8 @@ def main():
                 time.sleep(0.02)
                 pulse = pulse + offset
         except KeyboardInterrupt:
-            pwm.setPWMFreq(0)
+            pwm.setServoPulse(0,0)
+            pwm.setServoPulse(1,0)
         
     elif tone == "sadness":
         rgb = (0<<16) | (0<<8) | 128
@@ -76,7 +77,8 @@ def main():
                 time.sleep(0.02)
                 pulse = pulse + offset
         except KeyboardInterrupt:
-            pwm.setPWMFreq(0)
+            pwm.setServoPulse(0,0)
+            pwm.setServoPulse(1,0)
             
     elif tone == "anger":
         rgb = (255<<16) | (0<<8) | 0
