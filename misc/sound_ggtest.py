@@ -114,9 +114,11 @@ if __name__ == "__main__":
     #        print("Keyword detected")
     #       break
     start = time.time()
-    gTTS('hello').save("hello.mp3")
+    gTTS('Hello!').save("hello.mp3")
     print(time.time() - start)
-    os.system("play -q hello.mp3 pitch 100 speed 1.2")
+    #os.system("play -q hello.mp3 speed 10c")
+    os.system("play -q hello.mp3 speed 1.4")
+
     
     #speak(engine, "Hello!")
     for i in range(PROMPT_LIMIT):
@@ -133,7 +135,7 @@ if __name__ == "__main__":
         print(guess["transcription"])
     gTTS(guess["transcription"]).save("voice.mp3")
     os.system("play -q voice.mp3 pitch 100 speed 1.2")
-
+    
 
     #gTTS(guess["transcription"]).save('voice.mp3')
     #os.system("aplay voice.mp3")

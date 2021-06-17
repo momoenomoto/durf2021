@@ -21,13 +21,13 @@ def noalsaerr():
     yield
     asound.snd_lib_error_set_handler(None)
 
-class Listener():
+class Listener:
     def __init__(self) -> None:
-        recognizer = sr.Recognizer()
+        self.recognizer = sr.Recognizer()
         with noalsaerr():
-            microphone = sr.Microphone(device_index=0)
+            self.microphone = sr.Microphone(device_index=0)
 
-    def listen(self):
+    def listens(self):
         """Transcribe speech from recorded from `microphone`.
 
         Returns a dictionary with three keys:
@@ -77,15 +77,15 @@ class Listener():
         elif not response["success"]:
             return response["error"]
         elif response["error"]:
-            return response["error"]
-        else:
             return "I didn't catch that. Say again?"
+        else:
+            return "I have encountered an error"
 
 if __name__ == "__main__":
     #PROMPT_LIMIT = 10
     
     pi = Listener()
-    print(pi.listen())
+    print(pi.listens())
 
     # for i in range(PROMPT_LIMIT):
     #     response = listen(recognizer, microphone)
