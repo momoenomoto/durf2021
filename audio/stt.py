@@ -4,6 +4,7 @@
 from ctypes import *
 from contextlib import contextmanager
 import speech_recognition as sr
+import time
 
 ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
 
@@ -22,6 +23,7 @@ def noalsaerr():
 class Listener:
     def __init__(self) -> None:
         self.recognizer = sr.Recognizer()
+        self.recognizer.pause_threshold = 0.5
         with noalsaerr():
             self.microphone = sr.Microphone(device_index=0)
 
@@ -46,10 +48,12 @@ class Listener:
 
         # adjust the recognizer sensitivity to ambient noise and record audio
         # from the microphone
+        start1 = time.time()
         with self.microphone as source:
             self.recognizer.adjust_for_ambient_noise(source)
             audio = self.recognizer.listen(source)
-            
+        end1 = time.time()
+        print("finished recording in " + str(end1-start1))
         # set up the response object
         response = {
             "success": True,
@@ -61,7 +65,10 @@ class Listener:
         # if a RequestError or UnknownValueError exception is caught,
         #     update the response object accordingly
         try:
+            start2 = time.time()
             response["transcription"] = self.recognizer.recognize_google(audio)
+            end2 = time.time()
+            print("finished recognizing in " + str(end2 - start2))
         except sr.RequestError:
             # API was unreachable or unresponsive
             response["success"] = False
@@ -83,7 +90,11 @@ if __name__ == "__main__":
     #PROMPT_LIMIT = 10
     
     pi = Listener()
-    print(pi.listens())
+    try:
+        while True:
+            print(pi.listens())
+    except KeyboardInterrupt:
+        pass
 
     # for i in range(PROMPT_LIMIT):
     #     response = listen(recognizer, microphone)
